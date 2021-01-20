@@ -1,5 +1,5 @@
 'use strict'
-
+// attach toggle level
 const FLAG = '🚩'
 const MINE = '💣'
 
@@ -11,6 +11,7 @@ var gLevel = {
     SIZE: 4,
     MINES: 2
 };
+
 
 var gGame = {
     isOn: false,
@@ -26,6 +27,13 @@ function initGame() {
     renderBoard(gBoard)
     console.log(gBoard);
 }
+
+
+function toggleLevel(size, mines) {
+    gLevel = { SIZE: size, MINES: mines }
+    return gLevel
+}
+
 
 
 function renderBoard(board) {
