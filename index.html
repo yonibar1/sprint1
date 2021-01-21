@@ -12,20 +12,24 @@
     <h1>Welcome to Mine Sweeper!</h1>
 
 
-    <h2>Please select A level</h2>
-    <button onclick="toggleLevel(4,2)">Beginner</button>
-    <button onclick="toggleLevel(8,12)">Medium</button>
-    <button onclick="toggleLevel(12,30)">Expert</button>
+    <h4>Click the Smiley for Restart</h4>
+    <div onclick="initGame()" class="btn-container">
 
+
+    </div>
+    <button class="level" onclick="toggleLevel(4,2)">Beginner</button>
+    <button class="level" onclick="toggleLevel(8,12)">Medium</button>
+    <button class="level" onclick="toggleLevel(12,30)">Expert</button>
+    <div class="time">Timer will start when you start revealing</div>
+    <!-- <div class="my-best">your best:</div> -->
     <div class="hearts"></div>
     <div class="game-container">
 
     </div>
     <div class="heart">
-        <span class="life"><img src="images/heart.gif"></span>
-        <span class="life"><img src="images/heart.gif"></span>
-        <span class="life"><img src="images/heart.gif"></span>
+
     </div>
+
 
 
     <script src="js/utils.js"></script>

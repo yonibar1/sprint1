@@ -1,4 +1,6 @@
 'use strict'
+var gTimeInterval;
+
 function buildBoard(size) {
     var mat = []
     for (var i = 0; i < size; i++) {
@@ -8,7 +10,7 @@ function buildBoard(size) {
                 minesAroundCount: 0,
                 isShown: false,
                 isMine: false,
-                isMarked: true
+                isMarked: false
             }
             mat[i][j] = gCell
         }
@@ -16,6 +18,37 @@ function buildBoard(size) {
     return mat
 }
 
+function setTime() {
+    var time = Date.now()
+    gTimeInterval = setInterval(function () {
+        var timeElapsed = (Date.now() - time) / 1000
+        document.querySelector('.time').innerText = timeElapsed
+    }, 100);
+}
+
+function resetTimer() {
+    clearInterval(gTimeInterval)
+    document.querySelector('.time').innerText = 0
+    gGame.shownCount = 0
+
+}
+
+function renderSmiley(num) {
+    var strHTML = ''
+    switch (num) {
+        case 0:
+            strHTML = `<img class="smiley" src="images/smile.png" alt="smiley-face"></img>`
+            break;
+        case 1:
+            strHTML = `<img class="smiley" src="images/lose.png" alt="smiley-face"></img>`
+            break;
+        case 2:
+            strHTML = `<img class="smiley" src="images/win.png" alt="smiley-face"></img>`
+            break;
+    }
+    var elBtn = document.querySelector('.btn-container')
+    elBtn.innerHTML = strHTML
+}
 
 function placeBomb(clickedI, clickedJ) {
     for (var i = 0; i < gLevel.MINES; i++) {
@@ -26,10 +59,8 @@ function placeBomb(clickedI, clickedJ) {
         } else {
             gBoard[rNum][rNum1].isMine = true
         }
-        console.log(rNum, rNum1);
     }
 }
-
 
 
 function getRandomInt(min, max) {
@@ -37,3 +68,22 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
+
+
+// function setBestScore(time) { 
+//     var bestTime = localStorage.getItem('bestTime')
+//     console.log(bestTime, 'bestTime');
+//     if (!bestTime || bestTime > time) {
+//         localStorage.setItem('bestTime', time)
+//     }
+//     renderBestTime()
+// }
+
+
+// function renderBestTime() {
+//     var bestTime = localStorage.getItem('bestTime')
+//     if (!bestTime) {
+//         document.querySelector('.my-best').innerText = bestTime
+//     }
+// }
+
