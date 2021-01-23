@@ -66,24 +66,24 @@ function placeBomb(clickedI, clickedJ) {
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
 
-// function setBestScore(time) { 
-//     var bestTime = localStorage.getItem('bestTime')
-//     console.log(bestTime, 'bestTime');
-//     if (!bestTime || bestTime > time) {
-//         localStorage.setItem('bestTime', time)
-//     }
-//     renderBestTime()
-// }
+function setBestScore(time) {
+    var bestTime = localStorage.getItem('bestTime');
+    var convertedTime = parseInt(time)
+    if (!bestTime || bestTime > convertedTime) {
+        localStorage.setItem('bestTime', convertedTime)
+    }
+    renderBestTime()
+}
 
 
-// function renderBestTime() {
-//     var bestTime = localStorage.getItem('bestTime')
-//     if (!bestTime) {
-//         document.querySelector('.my-best').innerText = bestTime
-//     }
-// }
+function renderBestTime() {
+    var bestTime = localStorage.getItem('bestTime')
+    if (bestTime) {
+        document.querySelector('.my-best').innerText = 'your best time is:' + bestTime + 's'
+    }
+}
 

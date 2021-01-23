@@ -1,5 +1,4 @@
 'use strict'
-// weekend TODO: *Best Score BONUS* ,other BONUSES ,fixing other bugs
 const FLAG = '🚩'
 const MINE = '💣'
 
@@ -27,6 +26,7 @@ function initGame() {
     gBoard = buildBoard(gLevel.SIZE)
     renderBoard(gBoard)
     renderLife()
+    renderBestTime()
 }
 
 
@@ -63,7 +63,7 @@ function renderLife() {
     elHearts.innerHTML = strHTML
 }
 
-function setMinesNegsCount(clickedI, clickedJ) {
+function setMinesNegsCount(clickedI, clickedJ, isExpend) {
     var count = 0;
     for (var i = clickedI - 1; i <= clickedI + 1; i++) {
         if (i < 0 || i > gBoard.length - 1) continue;
@@ -73,8 +73,10 @@ function setMinesNegsCount(clickedI, clickedJ) {
             if (gBoard[i][j].isMine) {
                 count++;
             } else {
-                var elNeg = document.querySelector(`.cell-${i}-${j}`)
-                expandShown(gBoard, elNeg, i, j)
+                if (isExpend) {
+                    var elNeg = document.querySelector(`.cell-${i}-${j}`)
+                    expandShown(gBoard, elNeg, i, j)
+                }
             }
         }
     }
@@ -94,7 +96,6 @@ function expandShown(board, negs, clickedI, clickedJ) {
                 count++;
             }
         }
-
     }
     negs.minesAroundCount = count
     negs.innerText = count
@@ -109,9 +110,11 @@ function cellclicked(elCell, i, j) {
     if (gBoard[i][j].isShown) return
     var cell = elCell
     if (gGame.shownCount === 0) {
+        gGame.isOn = true
         placeBomb(i, j)
         setTime()
     }
+
     if (!cell.innerText) {
         gGame.shownCount++
     }
@@ -125,17 +128,22 @@ function cellclicked(elCell, i, j) {
         cell.innerText = MINE
         if (!gLife) { gameOver() }
     } else {
-        var negs = setMinesNegsCount(i, j)
+        var negs = setMinesNegsCount(i, j, false)
+        if (negs === 0) {
+            negs = setMinesNegsCount(i, j, true)
+        }
         gBoard[i][j].isShown = true
         cell.innerText = negs
     }
     if (isVictory()) {
         renderSmiley(2)
-        // var currTime = document.querySelector('.time').innerText
-        // setBestScore(currTime)
-        resetTimer()
+        var currScore = document.querySelector('.time').innerText
+        setBestScore(currScore)
+        setTimeout(function () { resetTimer() }, 100);
+        gGame.isOn = false
     }
 }
+
 
 function gameOver() {
     renderSmiley(1)
@@ -174,9 +182,10 @@ function putFlag(elCell, i, j) {
         cell.innerText = FLAG
     }
     if (isVictory()) {
+        gGame.isOn = false
         renderSmiley(2)
-        // var best = document.querySelector('.my-best').innerText
-        // setBestScore(best)
-        resetTimer()
+        var currScore = document.querySelector('.time').innerText
+        setBestScore(currScore)
+        setTimeout(function () { resetTimer() }, 100);
     }
 }
